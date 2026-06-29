@@ -1,12 +1,12 @@
 export type UserRole = 'user'| 'admin';
-export type UserState = 'active'|'suspenden';
+export type UserStatus = "active" | "suspended";
 export interface AuthTokenPayload {
     sub: string;
     role: UserRole;
 }
 
-export interface AuthenticatedUser{
-    id :string ;
-    role:UserRole;
-    status: UserState;
+export interface AuthenticatedUser {
+    id: string;
+    role: UserRole;
+    status: UserStatus;
 }
