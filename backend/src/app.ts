@@ -12,6 +12,8 @@ import authRouter from "./modules/auth/auth.routes";
 
 import {sendError} from "./utils/response.util";
 
+import usersRouter from "./modules/users/users.routes";
+
 const app = express();
 
 app.use(helmet());
@@ -22,6 +24,10 @@ app.use(
         credentials: true,
     })
 );
+
+
+
+
 
 app.use(globalRateLimiter);
 
@@ -35,6 +41,12 @@ app.use("/api/v1/system/status", routersystem);
 
 // auth api
 app.use("/api/v1/auth", authRouter);
+
+
+// users api endpoint
+app.use("/api/v1/users", usersRouter);
+
+
 
 app.use((_req, res) => {
     sendError(res, "Route not found", 404, "ROUTE_NOT_FOUND");
