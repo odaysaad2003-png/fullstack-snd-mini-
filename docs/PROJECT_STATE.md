@@ -553,4 +553,57 @@ Main goals:
 * Improve authorization structure for future modules
 
 
-Sprint 0 — reviewed and prepared for Sprint 1
+# PROJECT_STATE.md
+
+## Current Status
+
+SND Mini Backend has completed the Auth + Users foundation.
+
+### Completed
+
+- Backend setup with Node.js, Express, TypeScript.
+- Environment validation using Zod.
+- MongoDB Atlas connection using Mongoose.
+- Centralized error handling.
+- AppError utility.
+- asyncHandler utility.
+- Auth module:
+  - Register
+  - Login
+  - Password hashing
+  - JWT access token generation
+- Users module:
+  - Get my profile
+  - Update my profile
+  - Change my password
+- Auth middleware:
+  - Bearer token extraction
+  - JWT verification
+  - Expired token handling
+  - Invalid token handling
+  - User existence check
+- Postman testing completed successfully for Auth and Users endpoints.
+
+### Verified Manually
+
+- Register works.
+- Duplicate email is rejected.
+- Login works.
+- Protected profile endpoint works with valid token.
+- Protected endpoints reject missing token.
+- Protected endpoints reject invalid token.
+- Profile update works.
+- Password change works.
+- Old password no longer works after password change.
+- New password works after password change.
+- Wrong current password is rejected.
+
+### Known History
+
+- MongoDB Atlas DNS/SRV connection issues occurred earlier.
+- Network connectivity to MongoDB shard was later confirmed successfully using PowerShell Test-NetConnection.
+- Endpoints were tested after connection was restored.
+
+### Next Recommended Sprint
+
+Sprint 4 should focus on connecting the Backend to a real Frontend Auth flow, so the user can learn the complete Full Stack request lifecycle.

@@ -3,6 +3,8 @@ import User from "./user.model";
 import {AppError} from "../../utils/app-error";
 import type {UpdateMyProfileInput, ChangeMyPasswordInput} from "./users.validation";
 
+
+import {toSafeUser} from "./user.presenter";
 const SALT_ROUNDS = 12;
 
 // ─── Get My Profile ───────────────────────────────────────────────────────────
@@ -14,7 +16,9 @@ export async function getMyProfile(userId: string) {
         throw new AppError("User not found", 404);
     }
 
-    return user;
+    return toSafeUser(user);
+
+   
 }
 
 // ─── Update My Profile ────────────────────────────────────────────────────────
@@ -37,7 +41,7 @@ export async function updateMyProfile(userId: string, input: UpdateMyProfileInpu
 
     await user.save();
 
-    return user;
+    return toSafeUser(user);
 }
 
 // ─── Change My Password ───────────────────────────────────────────────────────

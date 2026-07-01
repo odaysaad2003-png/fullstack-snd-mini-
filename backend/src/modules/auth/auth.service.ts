@@ -6,6 +6,9 @@ import { AppError } from '../../utils/app-error';
 import type { AuthTokenPayload } from './auth.types';
 import type { RegisterInput, LoginInput } from './auth.validation';
 
+import {toSafeUser} from "../users/user.presenter";
+
+
 const SALT_ROUNDS = 12;
 
 function generateAccessToken(payload: AuthTokenPayload): string {
@@ -41,15 +44,7 @@ export async function registerUser(input: RegisterInput): Promise<{
   });
 
   return {
-    user: {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      role: user.role,
-      status: user.status,
-      createdAt: user.createdAt,
-    },
+    user: toSafeUser(user),
     accessToken,
   };
 }
@@ -82,15 +77,7 @@ export async function loginUser(input: LoginInput): Promise<{
   });
 
   return {
-    user: {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      role: user.role,
-      status: user.status,
-      createdAt: user.createdAt,
-    },
+    user: toSafeUser(user),
     accessToken,
   };
 }
@@ -103,14 +90,6 @@ export async function getMe(userId: string): Promise<{ user: object }> {
   }
 
   return {
-    user: {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      role: user.role,
-      status: user.status,
-      createdAt: user.createdAt,
-    },
+    user: toSafeUser(user),
   };
 }
