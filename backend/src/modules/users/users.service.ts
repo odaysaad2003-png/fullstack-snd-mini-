@@ -43,24 +43,30 @@ export async function updateMyProfile(userId: string, input: UpdateMyProfileInpu
 // ─── Change My Password ───────────────────────────────────────────────────────
 
 export async function changeMyPassword(userId: string, input: ChangeMyPasswordInput) {
-    // Must use .select("+password") because password has select: false on the model
+    
     const user = await User.findById(userId).select("+password");
 
     if (!user) {
         throw new AppError("User not found", 404);
     }
 
-    // user.password is defined here because we selected it above.
-    // The non-null assertion is safe in this context.
-    const isMatch = await bcrypt.compare(input.currentPassword, user.password!);
+    if (!user.password) {
+        throw new AppError("Password is not available for this user", 500);
+    }
 
-    if (!isMatch) {
+    const isCurrentPasswordCorrect = await bcrypt.compare(input.currentPassword, user.password);
+
+    if (!isCurrentPasswordCorrect) {
         throw new AppError("Current password is incorrect", 401);
     }
 
-    // Hash and save
-    user.password = await bcrypt.hash(input.newPassword, SALT_ROUNDS);
-    await user.save();
+    const isSamePassword = await bcrypt.compare(input.newPassword, user.password);
 
-    // Return nothing — the controller will send a success message with empty data
+    if (isSamePassword) {
+        throw new AppError("New password must be different from current password", 400);
+    }
+
+    user.password = await bcrypt.hash(input.newPassword, SALT_ROUNDS);
+
+    await user.save();
 }
